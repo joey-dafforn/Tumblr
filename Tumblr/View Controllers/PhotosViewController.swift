@@ -9,9 +9,13 @@
 import UIKit
 import AlamofireImage
 
-class PhotosViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class PhotosViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
+    
     var selectedIndex : NSInteger! = -1 //Delecre this global
     var i = 1 // Used to make sure try again alert only shows once
+    
+    @IBOutlet weak var searchBar: UISearchBar!
+    
     let alertController = UIAlertController(title: "Cannot get feed", message: "The internet connection appears to be offline", preferredStyle: .alert)
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -88,17 +92,39 @@ class PhotosViewController: UIViewController, UITableViewDataSource, UITableView
         photosTableView.insertSubview(refreshControl, at: 0)
         photosTableView.delegate = self
         photosTableView.dataSource = self
-        fetchFeed()
+        searchBar.delegate = self
+        fetchFeed("")
     }
 
-    func fetchFeed() {
-        let url = URL(string: "https://api.tumblr.com/v2/blog/humansofnewyork.tumblr.com/posts/photo?api_key=Q6vHoaVm5L1u2ZAW1fqv3Jw48gFzYVg9P0vH0VHl3GVy6quoGV")!
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        let userQuery = searchBar.text
+        var userQueryFormatted = "humansofnewyork"
+        if !(userQuery?.isEmpty)! {
+            userQueryFormatted = (userQuery?.replacingOccurrences(of: " ", with: ""))! // If something was searched, get the query
+            userQueryFormatted = userQueryFormatted.lowercased() // Cast the string to lowercase to comply with API parameters
+        }
+        fetchFeed(userQueryFormatted)
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar)  {
+        searchBar.resignFirstResponder()
+        
+    }
+    
+    func fetchFeed(_ urlString: String) {
+        var temp = urlString
+        if urlString.isEmpty {
+            temp = "humansofnewyork"
+        }
+        let totalUrl = "https://api.tumblr.com/v2/blog/" + temp + ".tumblr.com/posts/photo?api_key=Q6vHoaVm5L1u2ZAW1fqv3Jw48gFzYVg9P0vH0VHl3GVy6quoGV"
+        print(totalUrl)
+        let url = URL(string: totalUrl)!
         let session = URLSession(configuration: .default, delegate: nil, delegateQueue: OperationQueue.main)
         session.configuration.requestCachePolicy = .reloadIgnoringLocalCacheData
         let task = session.dataTask(with: url) { (data, response, error) in
             if let error = error {
                 let tryAgainAction = UIAlertAction(title: "Try again", style: .default) { (action) in
-                    self.fetchFeed()
+                    self.fetchFeed(temp)
                 }
                 if self.i == 1 {
                     // add the try agian action to the alert controller
@@ -114,9 +140,15 @@ class PhotosViewController: UIViewController, UITableViewDataSource, UITableView
                 
                 // TODO: Get the posts and store in posts property
                 // Get the dictionary from the response key
-                let responseDictionary = dataDictionary["response"] as! [String: Any]
+                if dataDictionary["response"] as? [String: Any] == nil {
+                    //do nothing
+                }
+                else {
+                    let responseDictionary = dataDictionary["response"] as! [String: Any]
+                    self.posts = responseDictionary["posts"] as! [[String: Any]]
+                }
                 // Store the returned array of dictionaries in our posts property
-                self.posts = responseDictionary["posts"] as! [[String: Any]]
+                
                 // TODO: Reload the table view
                 self.photosTableView.reloadData()
             }
@@ -128,7 +160,6 @@ class PhotosViewController: UIViewController, UITableViewDataSource, UITableView
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
 
     /*
     // MARK: - Navigation
