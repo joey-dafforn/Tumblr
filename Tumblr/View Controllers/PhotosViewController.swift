@@ -11,7 +11,7 @@ import AlamofireImage
 
 class PhotosViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
     
-    var selectedIndex : NSInteger! = -1 //Delecre this global
+    var selectedIndex : NSInteger! = -1 //Declare this globally
     var i = 1 // Used to make sure try again alert only shows once
     
     @IBOutlet weak var searchBar: UISearchBar!
@@ -55,10 +55,8 @@ class PhotosViewController: UIViewController, UITableViewDataSource, UITableView
             let url = URL(string: urlString)
             cell.pictureView.af_setImage(withURL: url!)
         }
-        //cell.pictureView.tintColor = UIColor.red
         let backgroundView = UIView()
         backgroundView.backgroundColor = UIColor.darkText.withAlphaComponent(0.8)
-        //cell.pictureView.frame = CGRect(x:0.0,y:0.0,width:365.0,height:216.0)
         cell.selectedBackgroundView = backgroundView
         
         return cell
@@ -100,7 +98,7 @@ class PhotosViewController: UIViewController, UITableViewDataSource, UITableView
         let userQuery = searchBar.text
         var userQueryFormatted = "humansofnewyork"
         if !(userQuery?.isEmpty)! {
-            userQueryFormatted = (userQuery?.replacingOccurrences(of: " ", with: ""))! // If something was searched, get the query
+            userQueryFormatted = (userQuery?.replacingOccurrences(of: " ", with: ""))! // If something was searched, get the query and remove spaces
             userQueryFormatted = userQueryFormatted.lowercased() // Cast the string to lowercase to comply with API parameters
         }
         fetchFeed(userQueryFormatted)
@@ -117,7 +115,6 @@ class PhotosViewController: UIViewController, UITableViewDataSource, UITableView
             temp = "humansofnewyork"
         }
         let totalUrl = "https://api.tumblr.com/v2/blog/" + temp + ".tumblr.com/posts/photo?api_key=Q6vHoaVm5L1u2ZAW1fqv3Jw48gFzYVg9P0vH0VHl3GVy6quoGV"
-        print(totalUrl)
         let url = URL(string: totalUrl)!
         let session = URLSession(configuration: .default, delegate: nil, delegateQueue: OperationQueue.main)
         session.configuration.requestCachePolicy = .reloadIgnoringLocalCacheData
@@ -127,7 +124,7 @@ class PhotosViewController: UIViewController, UITableViewDataSource, UITableView
                     self.fetchFeed(temp)
                 }
                 if self.i == 1 {
-                    // add the try agian action to the alert controller
+                    // add the try again action to the alert controller
                     self.alertController.addAction(tryAgainAction)
                     self.i = self.i + 1
                 }
@@ -136,9 +133,7 @@ class PhotosViewController: UIViewController, UITableViewDataSource, UITableView
                 }
             } else if let data = data,
                 let dataDictionary = try! JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
-                //print(dataDictionary)
                 
-                // TODO: Get the posts and store in posts property
                 // Get the dictionary from the response key
                 if dataDictionary["response"] as? [String: Any] == nil {
                     //do nothing
