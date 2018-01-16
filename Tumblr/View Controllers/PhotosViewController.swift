@@ -150,6 +150,33 @@ class PhotosViewController: UIViewController, UITableViewDataSource, UITableView
         }
         task.resume()
     }
+    ////////////////////////////////////////////////
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let destinationViewController = segue.destination as! PhotoDetailsViewController
+        let cell = sender as! PhotoCell
+        let indexPath = photosTableView.indexPath(for: cell)!
+        let post = posts[indexPath.row]
+        
+        destinationViewController.image = cell.pictureView.image
+//        if let photos = post["photos"] as? [[String: Any]] {
+//            // photos is NOT nil, we can use it!
+//            // 1.
+//            let photo = photos[0]
+//            // 2.
+//            let originalSize = photo["original_size"] as! [String: Any]
+//            // 3.
+//            let urlString = originalSize["url"] as! String
+//            // 4.
+//            let url = URL(string: urlString)
+//
+//            destinationViewController.detailViewPicture.af_setImage(withURL: url!) // Results in segfault
+//        }
+//        let backgroundView = UIView()
+//        backgroundView.backgroundColor = UIColor.darkText.withAlphaComponent(0.8)
+//        cell.selectedBackgroundView = backgroundView
+        
+        //return cell
+    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
