@@ -13,10 +13,28 @@ class PhotoDetailsViewController: UIViewController {
     @IBOutlet weak var detailViewPicture: UIImageView!
     var image: UIImage!
     
+    
+    @IBAction func zoomGestureRecognizer(_ sender: UITapGestureRecognizer) {
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         detailViewPicture.image = image
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTap(sender:)))
+        
+        // Optionally set the number of required taps, e.g., 2 for a double click
+        tapGestureRecognizer.numberOfTapsRequired = 1
+        
+        // Attach it to a view of your choice. If it's a UIImageView, remember to enable user interaction
+        detailViewPicture.isUserInteractionEnabled = true
+        detailViewPicture.addGestureRecognizer(tapGestureRecognizer)
         // Do any additional setup after loading the view.
+    }
+    
+    @objc func didTap(sender: UITapGestureRecognizer) {
+        let location = sender.location(in: view)
+        performSegue(withIdentifier: "zoomSegue", sender: nil)
+        // User tapped at the point above. Do something with that if you want.
     }
 
     override func didReceiveMemoryWarning() {
@@ -24,6 +42,11 @@ class PhotoDetailsViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    //*************************function to perform segue
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let destinationViewController = segue.destination as! ZoomViewController
+        destinationViewController.image = image
+    }
 
     /*
     // MARK: - Navigation
