@@ -13,22 +13,22 @@ class PhotosViewController: UIViewController, UITableViewDataSource, UITableView
     
     var selectedIndex : NSInteger! = -1 //Declare this globally
     var i = 1 // Used to make sure try again alert only shows once
-    
+    var userQueryFormatted: String = "humansofnewyork"
     @IBOutlet weak var searchBar: UISearchBar!
     
     let alertController = UIAlertController(title: "Cannot get feed", message: "The internet connection appears to be offline", preferredStyle: .alert)
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.row == selectedIndex{
+        if indexPath.section == selectedIndex{
             selectedIndex = -1
         }else{
-            selectedIndex = indexPath.row
+            selectedIndex = indexPath.section
         }
         tableView.reloadData()
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.row == selectedIndex
+        if indexPath.section == selectedIndex
         {
             return 226
         }else{
@@ -36,13 +36,46 @@ class PhotosViewController: UIViewController, UITableViewDataSource, UITableView
         }
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: 320, height: 30))
+        headerView.backgroundColor = UIColor(white: 1, alpha: 0.9)
+        let profileView = UIImageView(frame: CGRect(x: 10, y: 0, width: 27.5, height: 27.5))
+        profileView.clipsToBounds = true
+        profileView.layer.cornerRadius = 15;
+        profileView.layer.borderColor = UIColor(white: 0.7, alpha: 0.8).cgColor
+        profileView.layer.borderWidth = 1;
+        let label = UILabel(frame: CGRect(x: 50, y: 0, width: 300, height: 30))
+        label.clipsToBounds = true
+        label.layer.cornerRadius = 15;
+        let post = posts[section]
+        let timestamp = (post["timestamp"]!)
+        let date = NSDate(timeIntervalSince1970: timestamp as! TimeInterval)
+        let dayTimePeriodFormatter = DateFormatter()
+        dayTimePeriodFormatter.dateFormat = "MMM dd, YYYY, hh:mm a"
+        let dateString = dayTimePeriodFormatter.string(from: date as Date)
+        label.text = "\(dateString)"
+        // Set the avatar
+        profileView.af_setImage(withURL: URL(string: "https://api.tumblr.com/v2/blog/" + userQueryFormatted + ".tumblr.com/avatar")!)
+        headerView.addSubview(profileView)
+        headerView.addSubview(label)
+        return headerView
+    }
+    
+//    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+//
+//    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
         return posts.count
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "PhotoCell", for: indexPath) as! PhotoCell
-        let post = posts[indexPath.row]
+        let post = posts[indexPath.section] // Now uses section number instead of row
         if let photos = post["photos"] as? [[String: Any]] {
             // photos is NOT nil, we can use it!
             // 1.
@@ -96,7 +129,7 @@ class PhotosViewController: UIViewController, UITableViewDataSource, UITableView
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         let userQuery = searchBar.text
-        var userQueryFormatted = "humansofnewyork"
+        userQueryFormatted = "humansofnewyork"
         if !(userQuery?.isEmpty)! {
             userQueryFormatted = (userQuery?.replacingOccurrences(of: " ", with: ""))! // If something was searched, get the query and remove spaces
             userQueryFormatted = userQueryFormatted.lowercased() // Cast the string to lowercase to comply with API parameters
