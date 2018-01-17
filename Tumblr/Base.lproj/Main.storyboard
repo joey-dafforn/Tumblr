@@ -78,12 +78,21 @@
                                     <outletCollection property="gestureRecognizers" destination="99P-q3-xyC" appends="YES" id="r6D-1O-2af"/>
                                 </connections>
                             </imageView>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="J5Q-6v-3O2">
+                                <rect key="frame" x="16" y="290" width="343" height="349"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="4th-Bq-Dee"/>
                     </view>
                     <navigationItem key="navigationItem" id="PLV-2N-bCG"/>
                     <connections>
+                        <outlet property="descriptionLabel" destination="J5Q-6v-3O2" id="TnI-jf-RWj"/>
                         <outlet property="detailViewPicture" destination="zu8-7r-hFC" id="MjX-d5-4bc"/>
                         <segue destination="nbo-PZ-hQh" kind="presentation" identifier="zoomSegue" modalTransitionStyle="coverVertical" id="OrN-fx-9Su"/>
                     </connections>

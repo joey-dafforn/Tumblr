@@ -12,14 +12,16 @@ class PhotoDetailsViewController: UIViewController {
 
     @IBOutlet weak var detailViewPicture: UIImageView!
     var image: UIImage!
+    var descriptionForImage: String = ""
     
-    
+    @IBOutlet weak var descriptionLabel: UITextView!
     @IBAction func zoomGestureRecognizer(_ sender: UITapGestureRecognizer) {
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         detailViewPicture.image = image
+        descriptionLabel.text = descriptionForImage
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTap(sender:)))
         
         // Optionally set the number of required taps, e.g., 2 for a double click

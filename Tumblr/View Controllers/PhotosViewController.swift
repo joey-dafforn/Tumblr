@@ -114,18 +114,22 @@ class PhotosViewController: UIViewController, UITableViewDataSource, UITableView
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = UIView(frame: CGRect(x: 0, y: 0, width: 320, height: 30))
         headerView.backgroundColor = UIColor(white: 1, alpha: 0.9)
+        
         let profileView = UIImageView(frame: CGRect(x: 10, y: 0, width: 27.5, height: 27.5))
         profileView.clipsToBounds = true
         profileView.layer.cornerRadius = 15;
         profileView.layer.borderColor = UIColor(white: 0.7, alpha: 0.8).cgColor
         profileView.layer.borderWidth = 1;
+        
         let label = UILabel(frame: CGRect(x: 50, y: 0, width: 320, height: 30))
         label.clipsToBounds = true
         label.layer.cornerRadius = 15;
+        
         let upvoteView = UIImageView(frame: CGRect(x: 290, y: 5, width: 20, height: 20))
         upvoteView.clipsToBounds = true
         upvoteView.layer.cornerRadius = 15;
         upvoteView.image = #imageLiteral(resourceName: "upvotePicture")
+        
         let post = posts[section]
         let timestamp = (post["timestamp"]!)
         let upvotes = (post["note_count"]!)
@@ -133,6 +137,7 @@ class PhotosViewController: UIViewController, UITableViewDataSource, UITableView
         let dayTimePeriodFormatter = DateFormatter()
         dayTimePeriodFormatter.dateFormat = "MMM dd, YYYY, hh:mm a"
         let dateString = dayTimePeriodFormatter.string(from: date as Date)
+        
         label.text = "\(dateString)                   \(upvotes)"
         // Set the avatar
         profileView.af_setImage(withURL: URL(string: "https://api.tumblr.com/v2/blog/" + userQueryFormatted + ".tumblr.com/avatar")!)
@@ -270,13 +275,18 @@ class PhotosViewController: UIViewController, UITableViewDataSource, UITableView
         }
         task.resume()
     }
-    ////////////////////////////////////////////////
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let destinationViewController = segue.destination as! PhotoDetailsViewController
         let cell = sender as! PhotoCell
         let indexPath = photosTableView.indexPath(for: cell)!
-        let post = posts[indexPath.row]
-        
+        let post = posts[indexPath.section]
+        let descriptionForPost = post["caption"] as! String
+        let str = descriptionForPost.replacingOccurrences(of: "<[^>]+>", with: "", options: .regularExpression, range: nil)
+        let another = str.replacingOccurrences(of: "&ldquo;", with: "\"", options: .caseInsensitive, range: nil)
+        let another1 = another.replacingOccurrences(of: "&rsquo;", with: "\'", options: .caseInsensitive, range: nil)
+        let another2 = another1.replacingOccurrences(of: "&rdquo;", with: "\"", options: .caseInsensitive, range: nil)
+        destinationViewController.descriptionForImage = another2
         destinationViewController.image = cell.pictureView.image
     }
     
