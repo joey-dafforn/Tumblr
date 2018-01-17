@@ -60,7 +60,7 @@ limitations under the License.
 
 **Tumblr** is a photo browsing app app using the [The Tumblr API](https://www.tumblr.com/docs/en/api/v2#posts).
 
-Time spent: **X** hours spent in total
+Time spent: **3** hours spent in total
 
 ## User Stories
 
@@ -72,16 +72,17 @@ The following **optional** user stories are implemented:
 
 - [X] Add Avatar and Publish Dates (+2pt)
 - [X] Zoomable Photo View (+2pt)
-- [ ] Infinite Scrolling (+2pt)
+- [X] Infinite Scrolling (+2pt)
 
 The following **additional** user stories are implemented:
 
-- [ ] List anything else that you can get done to improve the app functionality! (+1-3pts)
+- [X] List anything else that you can get done to improve the app functionality! (+1-3pts)
+- [X] Added label with number of upvotes (note_count) to show popularity of post
 
 Please list two areas of the assignment you'd like to **discuss further with your peers** during the next class (examples include better ways to implement something, how to extend your app in certain ways, etc):
 
-1.
-2.
+1. More efficient way to zoom in instead of creating a new view
+2. More appealing way to present the feed/information for each post
 
 ## Video Walkthrough
 

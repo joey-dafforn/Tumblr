@@ -33,8 +33,9 @@ class PhotoDetailsViewController: UIViewController {
     
     @objc func didTap(sender: UITapGestureRecognizer) {
         let location = sender.location(in: view)
-        performSegue(withIdentifier: "zoomSegue", sender: nil)
         // User tapped at the point above. Do something with that if you want.
+
+        performSegue(withIdentifier: "zoomSegue", sender: nil)
     }
 
     override func didReceiveMemoryWarning() {
@@ -42,7 +43,6 @@ class PhotoDetailsViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    //*************************function to perform segue
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let destinationViewController = segue.destination as! ZoomViewController
         destinationViewController.image = image
