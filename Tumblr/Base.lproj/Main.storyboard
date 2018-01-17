@@ -10,7 +10,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Photos View Controller-->
+        <!--Feed-->
         <scene sceneID="RCk-dp-XKo">
             <objects>
                 <viewController id="lIj-kt-gGP" customClass="PhotosViewController" customModule="Tumblr" sceneMemberID="viewController">
@@ -52,7 +52,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="Zpe-Hy-Odx"/>
                     </view>
-                    <navigationItem key="navigationItem" id="3gE-10-bNa"/>
+                    <navigationItem key="navigationItem" title="Feed" id="3gE-10-bNa"/>
                     <connections>
                         <outlet property="photosTableView" destination="9yZ-hg-72Q" id="jzt-Zv-g5D"/>
                         <outlet property="searchBar" destination="G7k-SL-gkn" id="Snk-3F-tEh"/>
